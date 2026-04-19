@@ -25,7 +25,7 @@ The system treats the LLM as a noisy parser and enforces structure through deter
 
 ## Demo
 
-[![Watch Demo](./assets/demo-thumbnail.png)](./assets/demo.mp4)
+[![Watch Demo on YouTube](https://img.youtube.com/vi/LZMXcOeCCXU/hqdefault.jpg)](https://youtu.be/LZMXcOeCCXU)
 
 ## Stack
 
