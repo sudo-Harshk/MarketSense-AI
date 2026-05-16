@@ -2,7 +2,7 @@
 
 # MarketSense AI
 
-**Turn a startup idea into structured competitor intelligence — in under 60 seconds.**
+**Turn a startup idea into structured competitor intelligence in under 60 seconds.**
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io/)
@@ -23,7 +23,7 @@
 
 ## What It Does
 
-You describe a startup idea. MarketSense finds real competitors, scrapes their websites, and synthesizes it all into a structured comparison table and grounded strategic insights — gap analysis, differentiation angles, and market patterns — with zero hallucination.
+You describe a startup idea. MarketSense finds real competitors, scrapes their websites, and synthesizes it all into a structured comparison table and grounded strategic insights - gap analysis, differentiation angles, and market patterns - with zero hallucination.
 
 No dumping raw search results. No vague summaries. Just structured, machine-readable output you can act on.
 
@@ -35,11 +35,11 @@ Most AI research tools pipe search results straight into an LLM and return unstr
 
 | Layer | Responsibility |
 |---|---|
-| **Exa Search** | Semantic company discovery — categories over keywords |
+| **Exa Search** | Semantic company discovery - categories over keywords |
 | **LLM (Groq)** | Extracts approximate structure from raw website text |
 | **Pydantic** | Enforces schema, coerces malformed output, rejects invalid data |
 | **Post-process** | Overrides LLM confidence scores with signal-based computation; strips marketing claims from features |
-| **Synthesis** | Constrains the LLM to grounded insights — every claim must cite a company name from the input data |
+| **Synthesis** | Constrains the LLM to grounded insights - every claim must cite a company name from the input data |
 
 Output is **stable and machine-readable across runs.** No hallucinated gaps, no floating-point confidence values, no numbered feature arrays.
 
@@ -47,7 +47,7 @@ Output is **stable and machine-readable across runs.** No hallucinated gaps, no 
 
 ## Architecture
 
-The pipeline is a series of layers — each one tightening the structure the next layer receives:
+The pipeline is a series of layers - each one tightening the structure the next layer receives:
 
 ![Architecture](./assets/architecture.png)
 
@@ -77,21 +77,21 @@ Streamlit UI                  → rendered output
 
 ## Pipeline in Detail
 
-**1. Semantic Search** — Exa's `category: company` filter finds company pages instead of review sites or news articles. Highlights are extracted per result.
+**1. Semantic Search** - Exa's `category: company` filter finds company pages instead of review sites or news articles. Highlights are extracted per result.
 
-**2. LLM Filtering** — A strict Groq prompt selects at most 5 real companies from the results, discarding blogs, directories, and aggregators.
+**2. LLM Filtering** - A strict Groq prompt selects at most 5 real companies from the results, discarding blogs, directories, and aggregators.
 
-**3. URL Quality Guard** — Deterministic rules drop known noise domains (`capterra.com`, `g2.com`, `linkedin.com`, etc.) and generic paths (`/about`, `/contact`, `/login`).
+**3. URL Quality Guard** - Deterministic rules drop known noise domains (`capterra.com`, `g2.com`, `linkedin.com`, etc.) and generic paths (`/about`, `/contact`, `/login`).
 
-**4. Content Extraction** — Exa fetches full page text for each remaining URL, capped at 5,000 characters per company.
+**4. Content Extraction** - Exa fetches full page text for each remaining URL, capped at 5,000 characters per company.
 
-**5. LLM Analysis + Pydantic** — Groq extracts a structured company profile (name, summary, target audience, features, pricing). Pydantic validates and coerces: float confidence becomes int, feature dicts become string arrays.
+**5. LLM Analysis + Pydantic** - Groq extracts a structured company profile (name, summary, target audience, features, pricing). Pydantic validates and coerces: float confidence becomes int, feature dicts become string arrays.
 
-**6. Post-Processing** — The post-process layer overrides two LLM outputs deterministically:
+**6. Post-Processing** - The post-process layer overrides two LLM outputs deterministically:
 - **Confidence** is recomputed from content depth, pricing signal presence, and URL quality — never from the LLM.
 - **Features** are filtered against a marketing-claim blocklist (`"up to"`, `"boost"`, `"guaranteed"`, etc.) and deduplicated by normalized key.
 
-**7. Synthesis** — A constrained prompt forces the LLM to produce a markdown comparison table and 3–5 insights. Each insight must end with `(based on: [company name])` and make a concrete claim. A validation pass discards any insight under 10 words or lacking a company citation.
+**7. Synthesis** - A constrained prompt forces the LLM to produce a markdown comparison table and 3–5 insights. Each insight must end with `(based on: [company name])` and make a concrete claim. A validation pass discards any insight under 10 words or lacking a company citation.
 
 ---
 
@@ -177,8 +177,8 @@ Open [http://localhost:8501](http://localhost:8501) in your browser.
 
 | Service | Free Tier | Link |
 |---|---|---|
-| Exa | Yes — 1,000 searches/month | [exa.ai](https://exa.ai) |
-| Groq | Yes — generous free tier | [console.groq.com](https://console.groq.com) |
+| Exa | Yes - 1,000 searches/month | [exa.ai](https://exa.ai) |
+| Groq | Yes - generous free tier | [console.groq.com](https://console.groq.com) |
 
 Both services offer free tiers sufficient for development and testing.
 
