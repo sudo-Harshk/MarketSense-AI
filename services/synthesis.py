@@ -8,7 +8,7 @@ from services.groq_client import call_llm
 def _build_prompt(companies: list[dict], idea: str, insight_count: int) -> str:
     rows = "\n".join(
         f"- {c['name']}: summary={c['summary']!r}, target={c['target_audience']!r}, "
-        f"features={c['features']!r}, pricing={c['pricing']!r}"
+        f"features={c['features']!r}"
         for c in companies
     )
     return f"""You are a market analyst. A founder has this idea: "{idea}"
@@ -26,7 +26,7 @@ Return a single JSON object with exactly two keys:
 }}
 
 TABLE RULES:
-- Columns must be exactly: Company | Summary | Target | Features | Pricing
+- Columns must be exactly: Company | Summary | Target | Features
 - One row per company
 - Every cell must be under 15 words
 - No bullet points inside cells
@@ -76,7 +76,6 @@ def synthesize(analyses: list[dict], idea: str) -> dict:
             "summary": a["summary"],
             "target_audience": a["target_audience"],
             "features": ", ".join(a["features"][:3]),
-            "pricing": a["pricing"],
         }
         for a in analyses
     ]

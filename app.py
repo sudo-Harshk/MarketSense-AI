@@ -178,8 +178,8 @@ if run and idea:
                     st.write(f"• {f}")
 
                 meta_col1, meta_col2 = st.columns(2)
-                meta_col1.caption(f"💰 {a['pricing']}")
-                meta_col2.caption(f"Confidence: {_confidence_label(a['confidence'])}")
+                meta_col1.caption(f"Confidence: {_confidence_label(a['confidence'])}")
+                meta_col2.caption("")
 
                 st.caption(a["sources"][0])
             st.write("")

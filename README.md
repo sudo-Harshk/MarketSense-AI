@@ -62,7 +62,7 @@ URL Quality Filter            → strips review sites, social profiles, noise pa
     ↓
 Exa Content Extraction        → full website text per company
     ↓
-LLM Analysis (Groq)           → structured JSON per company (name, features, pricing…)
+LLM Analysis (Groq)           → structured JSON per company (name, features)
     ↓
 Pydantic Validation           → type coercion, schema enforcement
     ↓
@@ -85,10 +85,10 @@ Streamlit UI                  → rendered output
 
 **4. Content Extraction** - Exa fetches full page text for each remaining URL, capped at 5,000 characters per company.
 
-**5. LLM Analysis + Pydantic** - Groq extracts a structured company profile (name, summary, target audience, features, pricing). Pydantic validates and coerces: float confidence becomes int, feature dicts become string arrays.
+**5. LLM Analysis + Pydantic** - Groq extracts a structured company profile (name, summary, target audience, features). Pydantic validates and coerces: float confidence becomes int, feature dicts become string arrays.
 
 **6. Post-Processing** - The post-process layer overrides two LLM outputs deterministically:
-- **Confidence** is recomputed from content depth, pricing signal presence, and URL quality — never from the LLM.
+- **Confidence** is recomputed from content depth, product-signal presence, and URL quality — never from the LLM.
 - **Features** are filtered against a marketing-claim blocklist (`"up to"`, `"boost"`, `"guaranteed"`, etc.) and deduplicated by normalized key.
 
 **7. Synthesis** - A constrained prompt forces the LLM to produce a markdown comparison table and 3–5 insights. Each insight must end with `(based on: [company name])` and make a concrete claim. A validation pass discards any insight under 10 words or lacking a company citation.

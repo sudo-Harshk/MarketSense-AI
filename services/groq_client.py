@@ -18,7 +18,6 @@ class CompanyAnalysis(BaseModel):
     summary: str
     target_audience: str
     features: List[str]
-    pricing: str
     confidence: int
     sources: List[str]
 
@@ -85,6 +84,9 @@ def analyze_company(content, url):
     response = call_llm([{"role": "user", "content": prompt}], json_mode=True)
     try:
         raw = json.loads(response)
+        # Synthesis/prompts may still include a pricing field from the LLM; ignore it here
+        if isinstance(raw, dict) and "pricing" in raw:
+            raw.pop("pricing", None)
         validated = CompanyAnalysis(**raw).model_dump()
         return post_process(validated, url, content)
     except Exception as e:
